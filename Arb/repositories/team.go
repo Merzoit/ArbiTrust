@@ -28,7 +28,18 @@ func (repo *PgTeamRepository) AddTeam(team *structures.Team) error {
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
 		RETURNING id
 	`
-	err := db.DatabasePool.QueryRow(context.Background(), query, team.Name, team.Owner, team.Contacts, team.Topic, team.MinSubPrice, team.MaxSubPrice, team.Description, team.BotLink, team.TeamSize, team.SponsorCount, team.MinWithdrawalAmount, team.IsVerified).Scan(&team.ID)
+	log.Printf("Executing SQL: %s with data: %+v", query, team)
+
+	err := db.DatabasePool.QueryRow(
+		context.Background(), query,
+		team.Name, team.Owner, team.Contacts, team.Topic,
+		team.MinSubPrice, team.MaxSubPrice, team.Description, team.BotLink,
+		team.IsScummer, team.TeamSize, team.SponsorCount, team.MinWithdrawalAmount, team.IsVerified,
+	).Scan(&team.ID)
+
+	if err != nil {
+		log.Printf("Error inserting team: %v", err)
+	}
 	return err
 }
 

@@ -43,7 +43,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/api/teams", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/team", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodPost:
 			teamController.CreateTeam(w, r)
