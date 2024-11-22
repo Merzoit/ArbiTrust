@@ -9,30 +9,11 @@ import (
 	tb "github.com/tucnak/telebot"
 )
 
-var (
-	Teams []structures.Team
-)
+var Teams []structures.Team
 
-/*func AddUserAPI(user structures.User) error {
-	apiUrl := "http://localhost:8080/api/users"
-
-	userData, err := json.Marshal(user)
-	if err != nil {
-		return fmt.Errorf("failed to encode userdata: %v", err)
-	}
-
-	resp, err := http.Post(apiUrl, "aplication/json", bytes.NewBuffer(userData))
-	if err != nil {
-		return fmt.Errorf("failed to send request to API: %v", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusCreated {
-		return fmt.Errorf("API returned status: %v", resp.Status)
-	}
-
-	return nil
-}*/
+func AddTeamToAPI(team structures.Team) error {
+	return PostToAPI("http://localhost:8080/api/team", team)
+}
 
 func FetchTeamsAPI() error {
 	apiUrl := "http://localhost:8080/api/allteams/"
