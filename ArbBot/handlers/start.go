@@ -4,7 +4,7 @@ import (
 	"arbbot/api"
 	"arbbot/menu"
 	"arbbot/structures"
-	"log"
+	"fmt"
 
 	tb "github.com/tucnak/telebot"
 )
@@ -16,7 +16,7 @@ func StartHandler(bot *tb.Bot, m *tb.Message) {
 	}
 
 	if err := api.AddUserAPI(user); err != nil {
-		log.Println("Error adding user:", err)
+		fmt.Println("Error adding user:", err)
 	}
 
 	menu.ShowMainMenu(bot, m)

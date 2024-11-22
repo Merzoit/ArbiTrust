@@ -32,7 +32,7 @@ func main() {
 		if err != nil {
 			bot.Send(m.Sender, "Неудалось добавить пользователя")
 			showMainMenu(bot, m)
-			log.Println("Error adding user", err)
+			fmt.Println("Error adding user", err)
 			return
 		}
 

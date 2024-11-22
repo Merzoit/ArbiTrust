@@ -4,7 +4,6 @@ import (
 	"arbbot/structures"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	tb "github.com/tucnak/telebot"
@@ -92,6 +91,6 @@ func SendTeam(bot *tb.Bot, user *tb.User, index int, batchSize int, teams []stru
 	menu.InlineKeyboard = buttons
 
 	if _, err := bot.Send(user, msgText, menu); err != nil {
-		log.Printf("Error sending message to user %d: %v", user.ID, err)
+		fmt.Printf("Error sending message to user %d: %v", user.ID, err)
 	}
 }

@@ -17,4 +17,10 @@ const (
 
 	//Server errors
 	ErrInternalServerError = "internal serveer error"
+
+	//OTHER
+	ErrFailedToExtractFromPath = "failed to extract ID from url"
+
+	//TEAM
+	ErrTeamNotFound = "team not found"
 )

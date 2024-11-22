@@ -5,12 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
 func PostToAPI(url string, data interface{}) error {
-	log.Printf("POST request to %s with data: %v", url, data)
+	fmt.Printf("POST request to %s with data: %v", url, data)
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		return fmt.Errorf("failed to encode data: %v", err)

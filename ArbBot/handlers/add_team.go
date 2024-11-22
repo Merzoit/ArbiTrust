@@ -3,7 +3,7 @@ package handlers
 import (
 	"arbbot/api"
 	"arbbot/structures"
-	"log"
+	"fmt"
 	"strconv"
 
 	tb "github.com/tucnak/telebot"
@@ -129,7 +129,7 @@ func CollectTeamData(bot *tb.Bot, m *tb.Message) {
 		teamData[userID].MinWithdrawalAmount = minWithdrawal
 
 		if err := api.AddTeamToAPI(*teamData[userID]); err != nil {
-			log.Printf("Ошибка при добавлении команды: %v", teamData)
+			fmt.Printf("Ошибка при добавлении команды: %v", teamData)
 			bot.Send(m.Sender, "Ошибка при добавлении команды, попробуйте позже.")
 		} else {
 			bot.Send(m.Sender,

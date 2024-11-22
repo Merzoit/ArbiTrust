@@ -12,6 +12,7 @@ const (
 	LogErrorUpdatingTeam = "Error updating team: %v"
 	LogErrorFetchingTeam = "Error fetching team: %v"
 	LogErrorDeletingTeam = "Error deleting team: %v"
+	LogErrorTeamScanning = "error scanning row: %v"
 	//REQUESTS
 	LogErrorDecodingRequestBody = "Error decoding request body: %v"
 	LogErrorEncodingResponse    = "Error encoding response: %v"
@@ -31,5 +32,7 @@ const (
 	LogTeamDeleteSuccessfully = "Team deleted successfully: %v"
 	LogFetchTeamCount         = "Successfully fetched %d teams"
 	//OTHER
-	LogFetchedUserID = "Successfully fetched user with id: %d"
+	LogFetchedUserID         = "Successfully fetched user with id: %d"
+	LogExtractIDSuccessfully = "Exctract id successfully from: %v"
+	LogErrorIteration        = "Error iterating over rows: %v"
 )
