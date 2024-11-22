@@ -1,12 +1,15 @@
 package main
 
 import (
+	"arbbot/api"
 	"arbbot/handlers"
 	"log"
 	"time"
 
 	tb "github.com/tucnak/telebot"
 )
+
+const batchSize = 3
 
 func main() {
 	botToken := "7676099516:AAEIhkwxeE1CDm6_kBO8eKghrQ0Lft7zE9M"
@@ -73,7 +76,7 @@ func main() {
 	})
 
 	bot.Handle(&tb.ReplyButton{Text: "Список команд"}, func(m *tb.Message) {
-		handlers.TeamListHandler(bot, m)
+		handlers.TeamListHandler(bot, m, batchSize, api.Teams)
 	})
 
 	bot.Handle(&tb.ReplyButton{Text: "Добавить команду"}, func(m *tb.Message) {
@@ -85,7 +88,7 @@ func main() {
 	})
 
 	bot.Handle(tb.OnCallback, func(c *tb.Callback) {
-		handlers.HandleNavigation(bot, c)
+		handlers.HandleNavigation(bot, c, 3, api.Teams)
 	})
 	bot.Start()
 	log.Panicln("OK!")
