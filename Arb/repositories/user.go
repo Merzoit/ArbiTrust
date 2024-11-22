@@ -10,7 +10,7 @@ import (
 
 type UserRepository interface {
 	AddUser(user *structures.User) error
-	GetUserById(i uint) (*structures.User, error)
+	GetUserById(id uint) (*structures.User, error)
 	DeleteUser(id uint) error
 	UpdateUser(user *structures.User) error
 }

@@ -51,14 +51,23 @@ func FetchTeamsAPI() error {
 	return json.NewDecoder(resp.Body).Decode(&Teams)
 }
 
-func SendTeam(bot *tb.Bot, user *tb.User, index int) {
-	if index < 0 || index >= len(Teams) {
-		log.Printf("Invalid index %d for teams array of size %d", index, len(Teams))
-		return
+// Обработчик отображения команд, batchSize - указывает на количество отображаемых команд за один раз.
+func SendTeam(bot *tb.Bot, user *tb.User, index int, batchSize int, teams []structures.Team) {
+	endIndex := index + batchSize
+
+	if endIndex > len(teams) {
+		endIndex = len(teams)
 	}
 
-	team := Teams[index]
-	msgTxt := fmt.Sprintf("Команда: %s\nВладелец: %s", team.Name, team.Owner)
+	msgText := "Список команд:\n"
+
+	for i := index; i < endIndex; i++ {
+		team := teams[i]
+		msgText += fmt.Sprintf(
+			"%d. Название: %s \nВладелец: %s\nОписание: %s\n\n",
+			i+1, team.Name, team.Owner, team.Description,
+		)
+	}
 
 	menu := &tb.ReplyMarkup{}
 	btnNext := tb.InlineButton{Text: "Вперед", Data: "next"}
@@ -82,7 +91,7 @@ func SendTeam(bot *tb.Bot, user *tb.User, index int) {
 	buttons = append(buttons, []tb.InlineButton{btnExit})
 	menu.InlineKeyboard = buttons
 
-	if _, err := bot.Send(user, msgTxt, menu); err != nil {
+	if _, err := bot.Send(user, msgText, menu); err != nil {
 		log.Printf("Error sending message to user %d: %v", user.ID, err)
 	}
 }

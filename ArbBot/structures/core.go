@@ -15,7 +15,7 @@ type Team struct {
 	MaxSubPrice         float64 `json:"max_sub_price"`
 	Description         string  `json:"description"`
 	BotLink             string  `json:"bot_link"`
-	IsScummer           bool    `json:"is_scummer"`
+	IsScummer           bool    `json:"is_scammer"`
 	TeamSize            int     `json:"team_size"`
 	SponsorCount        int     `json:"sponsor_count"`
 	MinWithdrawalAmount int     `json:"min_withdrawal_amount"`
