@@ -7,6 +7,7 @@ const (
 	LogErrorFetchingUser = "Error fetching user: %v"
 	LogErrorUpdatingUser = "Error updating user: %v"
 	LogErrorDeletingUser = "Error deleting user: %v"
+	LogErrorUserScanning = "error scanning row: %v"
 	//TEAM
 	LogErrorAddingTeam   = "Error adding team: %v"
 	LogErrorUpdatingTeam = "Error updating team: %v"

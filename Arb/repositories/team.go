@@ -48,10 +48,10 @@ func (repo *PgTeamRepository) AddTeam(team *structures.Team) error {
 }
 
 func (repo *PgTeamRepository) GetTeamById(id uint) (*structures.Team, error) {
-	log.Println("DB: " + constants.CallCreateUser)
 	team := &structures.Team{}
 	query := "SELECT id, name, owner, contacts, topic, min_subscriber_price, max_subscriber_price, description, bot_link, is_scammer, team_size, sponsor_count, min_withdrawal_amount FROM teams WHERE id=$1"
 
+	log.Println("DB: " + constants.CallCreateUser)
 	err := db.DatabasePool.QueryRow(context.Background(), query, id).Scan(
 		&team.ID, &team.Name, &team.Owner, &team.Contacts, &team.Topic,
 		&team.MinSubPrice, &team.MaxSubPrice, &team.Description, &team.BotLink,
@@ -72,6 +72,7 @@ func (repo *PgTeamRepository) UpdateTeam(team *structures.Team) error {
 		UPDATE teams SET name=$1, owner=$2, contacts=$3, topic=$4, min_subscriber_price=$5, max_subscriber_price=$6, description=$7, bot_link=$8, is_scammer=$9, team_size=$10, sponsor_count=$11, min_withdrawal_amount=$12
 		WHERE id=$13
 		`
+
 	log.Printf("DB: " + constants.CallUpdateTeam)
 	_, err := db.DatabasePool.Exec(
 		context.Background(), query, team.Name, team.Owner,
@@ -79,6 +80,7 @@ func (repo *PgTeamRepository) UpdateTeam(team *structures.Team) error {
 		team.Description, team.BotLink, team.IsScummer, team.TeamSize,
 		team.SponsorCount, team.MinWithdrawalAmount, team.ID,
 	)
+
 	if err != nil {
 		log.Printf("DB: "+constants.LogErrorUpdatingTeam, err)
 		return err

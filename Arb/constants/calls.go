@@ -16,4 +16,5 @@ const (
 	CallExtractID = "extractID called"
 	//DB
 	CallDBAddingTeam = "Adding team to datebase..."
+	CallDBAddingUser = "Adding user to database..."
 )

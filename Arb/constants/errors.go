@@ -23,4 +23,5 @@ const (
 
 	//TEAM
 	ErrTeamNotFound = "team not found"
+	ErrUserNotFound = "user not found"
 )
