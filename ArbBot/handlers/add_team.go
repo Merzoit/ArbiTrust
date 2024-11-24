@@ -9,8 +9,8 @@ import (
 	tb "github.com/tucnak/telebot"
 )
 
-var teamData = make(map[int]*structures.Team)
-var step = make(map[int]int)
+var teamDatas = make(map[int]*structures.Team)
+var stepss = make(map[int]int)
 
 func AddTeamHandler(bot *tb.Bot, m *tb.Message) {
 	teamData[m.Sender.ID] = &structures.Team{IsVerified: false}
@@ -22,7 +22,7 @@ func AddTeamHandler(bot *tb.Bot, m *tb.Message) {
 		})
 }
 
-func CollectTeamData(bot *tb.Bot, m *tb.Message) {
+func CollectTeamDatas(bot *tb.Bot, m *tb.Message) {
 	userID := m.Sender.ID
 	currentStep := step[userID]
 

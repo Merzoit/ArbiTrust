@@ -1,9 +1,11 @@
 package api
 
 import (
+	"arbbot/constants"
 	"arbbot/structures"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	tb "github.com/tucnak/telebot"
@@ -12,29 +14,48 @@ import (
 var Teams []structures.Team
 
 func AddTeamToAPI(team structures.Team) error {
-	return PostToAPI("http://localhost:8080/api/team", team)
+	log.Printf(constants.CallAddTeam, team.ID)
+
+	err := PostToAPI("http://localhost:8080/api/team", team)
+	if err != nil {
+		log.Printf(constants.LogErrorAddingTeam, err)
+		return err
+	}
+
+	log.Printf(constants.LogTeamAddingSuccessfully, team.ID)
+	return nil
 }
 
 func FetchTeamsAPI() error {
 	apiUrl := "http://localhost:8080/api/allteams/"
+	log.Printf(constants.CallFetchTeam, apiUrl)
 
 	resp, err := http.Get(apiUrl)
 	if err != nil {
-		return err
+		log.Printf(constants.ErrFetchingResponse, err)
+		return fmt.Errorf(constants.ErrFetchingResponse, err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to fetch teams %s", resp.Status)
+		log.Printf(constants.ErrFetchingTeam, resp.Status)
+		return fmt.Errorf(constants.ErrFetchingTeam, resp.Status)
 	}
 
-	return json.NewDecoder(resp.Body).Decode(&Teams)
+	err = json.NewDecoder(resp.Body).Decode(&Teams)
+	if err != nil {
+		log.Printf(constants.ErrDecodingResponse, err)
+		return fmt.Errorf(constants.ErrDecodingResponse, err)
+	}
+
+	log.Println(constants.LogTeamFetchingSuccessfylly)
+	return nil
 }
 
-// Обработчик отображения команд, batchSize - указывает на количество отображаемых команд за один раз.
 func SendTeam(bot *tb.Bot, user *tb.User, index int, batchSize int, teams []structures.Team) {
-	endIndex := index + batchSize
+	log.Printf(constants.CallShowTeamSender, user.ID)
 
+	endIndex := index + batchSize
 	if endIndex > len(teams) {
 		endIndex = len(teams)
 	}
@@ -72,6 +93,8 @@ func SendTeam(bot *tb.Bot, user *tb.User, index int, batchSize int, teams []stru
 	menu.InlineKeyboard = buttons
 
 	if _, err := bot.Send(user, msgText, menu); err != nil {
-		fmt.Printf("Error sending message to user %d: %v", user.ID, err)
+		log.Printf(constants.ErrSendingMessage, user.ID)
+	} else {
+		log.Println(constants.LogTeamSendingSuccessfylly)
 	}
 }
