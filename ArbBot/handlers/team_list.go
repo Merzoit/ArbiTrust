@@ -42,7 +42,7 @@ func HandleNavigation(bot *tb.Bot, c *tb.Callback, batchSize int, teams []struct
 		}
 	case "exit":
 		if _, err := bot.Send(c.Sender, "Выход из списка команд"); err != nil {
-			log.Printf(constants.ErrNavigationHandler)
+			log.Printf(constants.ErrNavigationHandler, err)
 		}
 		delete(currentIndex, userID)
 	}

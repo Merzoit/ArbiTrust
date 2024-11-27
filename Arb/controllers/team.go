@@ -35,6 +35,7 @@ func (tc *TeamController) CreateTeam(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+
 	err = json.NewEncoder(w).Encode(team)
 	if err != nil {
 		log.Printf("CONTROLLER: "+constants.LogErrorEncodingResponse, err)

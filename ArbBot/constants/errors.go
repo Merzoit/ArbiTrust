@@ -17,6 +17,8 @@ const (
 	ErrSendingStep       = "error sending step: %v"
 	//USER
 	LogErrorAddingUser = "error adding user: %v"
+	//OBJECTS
+
 	//OTHER
 	LogEmptyList = "list is empty"
 )

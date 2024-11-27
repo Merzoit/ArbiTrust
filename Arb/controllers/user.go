@@ -40,7 +40,7 @@ func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	err = json.NewEncoder(w).Encode(user)
 	if err != nil {
 		log.Printf("CONTROLLER: "+constants.LogErrorEncodingResponse, err)
-
+		return
 	}
 
 	log.Printf("CONTROLLER: "+constants.LogUserCreateSuccessfully, user.ID)

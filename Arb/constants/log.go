@@ -39,6 +39,8 @@ const (
 	LogTeamUpdateSuccessfully = "Team updated successfully: %v"
 	LogTeamDeleteSuccessfully = "Team deleted successfully: %v"
 	LogFetchTeamCount         = "Successfully fetched %d teams"
+	//PUBLIC
+	LogPublicCreateSuccessfully = "Public created successfully %v"
 	//OTHER
 	LogFetchedUserID         = "Successfully fetched user with id: %d"
 	LogExtractIDSuccessfully = "Exctract id successfully from: %v"

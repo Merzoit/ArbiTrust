@@ -33,6 +33,7 @@ func (repo *PgUserRepository) AddUser(user *structures.User) error {
         RETURNING id
     `
 	log.Println("DB: " + constants.CallDBAddingUser)
+
 	err := db.DatabasePool.QueryRow(
 		context.Background(), query, user.TID, user.Name,
 		user.RegDate, user.Rating,

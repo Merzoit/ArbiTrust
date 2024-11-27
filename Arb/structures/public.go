@@ -1,7 +1,7 @@
 package structures
 
 type Public struct {
-	ID             int     `json:"id"`
+	ID             uint    `json:"id"`
 	Name           string  `json:"name"`
 	Tag            string  `json:"tag"`
 	Owner          string  `json:"owner"`

@@ -10,15 +10,15 @@ import (
 
 type PublicRepository interface {
 	CreatePublic(public *structures.Public) error
-	GetPublicByID(id int) (*structures.Public, error)
+	GetPublicByID(id uint) (*structures.Public, error)
 	GetAllPublics() ([]*structures.Public, error)
 	UpdatePublic(public *structures.Public) error
-	DeletePublic(id int) error
+	DeletePublic(id uint) error
 }
 
 type PgPublicRepository struct{}
 
-func NewPublicRepository() PublicRepository {
+func NewPgPublicRepository() PublicRepository {
 	return &PgPublicRepository{}
 }
 
@@ -47,7 +47,7 @@ func (repo *PgPublicRepository) CreatePublic(public *structures.Public) error {
 	return nil
 }
 
-func (repo *PgPublicRepository) GetPublicByID(id int) (*structures.Public, error) {
+func (repo *PgPublicRepository) GetPublicByID(id uint) (*structures.Public, error) {
 	public := &structures.Public{}
 	query := `
 		SELECT * FROM publics WHERE id = $1
@@ -127,7 +127,7 @@ func (repo *PgPublicRepository) UpdatePublic(public *structures.Public) error {
 	return nil
 }
 
-func (repo *PgPublicRepository) DeletePublic(id int) error {
+func (repo *PgPublicRepository) DeletePublic(id uint) error {
 	query := `
 		DELETE FROM publics WHERE id = $1
 	`
