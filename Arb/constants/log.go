@@ -14,6 +14,13 @@ const (
 	LogErrorFetchingTeam = "Error fetching team: %v"
 	LogErrorDeletingTeam = "Error deleting team: %v"
 	LogErrorTeamScanning = "error scanning row: %v"
+	//PUBLIC
+	LogErrorAddingPublic       = "Error adding public: %v"
+	LogErrorFetchingPublic     = "Error fetching public: %v"
+	LogErrorFetchingAllPublics = "Error fetching all publics: %v"
+	LogErrorScaningPublic      = "Error scaning public: %v"
+	LogErrorUpdatingPublic     = "Error updating public: %v"
+	LogErrorDeletingPublic     = "Error deleting public: %v"
 	//REQUESTS
 	LogErrorDecodingRequestBody = "Error decoding request body: %v"
 	LogErrorEncodingResponse    = "Error encoding response: %v"
