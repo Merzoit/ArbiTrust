@@ -11,7 +11,7 @@ import (
 
 var currentIndex = make(map[int]int)
 
-func TeamListHandler(bot *tb.Bot, m *tb.Message, batchSize int, teams []structures.Team) {
+func TeamListHandlers(bot *tb.Bot, m *tb.Message, batchSize int, teams []structures.Team) {
 	log.Printf("Displaying team list to user %v", m.Sender.ID)
 
 	if len(teams) == 0 {

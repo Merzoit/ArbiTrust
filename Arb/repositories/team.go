@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"time"
 )
 
 type TeamRepository interface {
@@ -24,9 +25,11 @@ func NewPgTeamRepository() TeamRepository {
 }
 
 func (repo *PgTeamRepository) AddTeam(team *structures.Team) error {
+	team.RegDate = time.Now()
+
 	query := `
-		INSERT INTO teams (name, owner, contacts, topic, min_subscriber_price, max_subscriber_price, description, bot_link, is_scammer, team_size, sponsor_count, min_withdrawal_amount, is_verified)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+		INSERT INTO teams (name, owner, contacts, topic, min_subscriber_price, max_subscriber_price, description, bot_link, is_scammer, team_size, sponsor_count, min_withdrawal_amount, is_verified, reg_date)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
 		RETURNING id
 	`
 	log.Println("DB: " + constants.CallDBAddingTeam)
@@ -35,7 +38,8 @@ func (repo *PgTeamRepository) AddTeam(team *structures.Team) error {
 		context.Background(), query,
 		team.Name, team.Owner, team.Contacts, team.Topic,
 		team.MinSubPrice, team.MaxSubPrice, team.Description, team.BotLink,
-		team.IsScummer, team.TeamSize, team.SponsorCount, team.MinWithdrawalAmount, team.IsVerified,
+		team.IsScummer, team.TeamSize, team.SponsorCount, team.MinWithdrawalAmount,
+		team.IsVerified, team.RegDate,
 	).Scan(&team.ID)
 
 	if err != nil {
@@ -49,13 +53,13 @@ func (repo *PgTeamRepository) AddTeam(team *structures.Team) error {
 
 func (repo *PgTeamRepository) GetTeamById(id uint) (*structures.Team, error) {
 	team := &structures.Team{}
-	query := "SELECT id, name, owner, contacts, topic, min_subscriber_price, max_subscriber_price, description, bot_link, is_scammer, team_size, sponsor_count, min_withdrawal_amount FROM teams WHERE id=$1"
+	query := "SELECT id, name, owner, contacts, topic, min_subscriber_price, max_subscriber_price, description, bot_link, is_scammer, team_size, sponsor_count, min_withdrawal_amount, reg_date FROM teams WHERE id=$1"
 
 	log.Println("DB: " + constants.CallCreateUser)
 	err := db.DatabasePool.QueryRow(context.Background(), query, id).Scan(
 		&team.ID, &team.Name, &team.Owner, &team.Contacts, &team.Topic,
 		&team.MinSubPrice, &team.MaxSubPrice, &team.Description, &team.BotLink,
-		&team.IsScummer, &team.TeamSize, &team.SponsorCount, &team.MinWithdrawalAmount,
+		&team.IsScummer, &team.TeamSize, &team.SponsorCount, &team.MinWithdrawalAmount, &team.RegDate,
 	)
 
 	if err != nil {

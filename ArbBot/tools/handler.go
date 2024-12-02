@@ -49,5 +49,51 @@ func SendBatch[T any](
 	}
 
 	msgText := fmt.Sprintf("Список (стр. %d из %d):\n", (index/batchSize)+1, (total+batchSize-1)/batchSize)
+	for i := index; i < endIndex; i++ {
+		msgText += formatEntityFunc(entities[i], i+1)
+	}
 
+	var buttons []tb.ReplyButton
+	if index > 0 {
+		buttons = append(buttons, tb.ReplyButton{Text: "Назад"})
+	}
+	if endIndex < total {
+		buttons = append(buttons, tb.ReplyButton{Text: "Вперед"})
+	}
+
+	if _, err := bot.Send(user, msgText, &tb.ReplyMarkup{ReplyKeyboard: [][]tb.ReplyButton{buttons}}); err != nil {
+		log.Printf("Error sending batch: %v\n", err)
+	}
+}
+
+func HandleNavigation[T any](
+	bot *tb.Bot,
+	m *tb.Message,
+	storage map[int]int,
+	batchSize int,
+	entities []T,
+	formatEntityFunc func(T, int) string,
+) {
+	userID := m.Sender.ID
+	currentIndex, exists := storage[userID]
+	if !exists {
+		bot.Send(m.Sender, "Не найден текущий индекс. Попробуйте снова.")
+		return
+	}
+
+	switch m.Text {
+	case "Вперед":
+		if currentIndex+batchSize < len(entities) {
+			storage[userID] = currentIndex + batchSize
+		}
+	case "Назад":
+		if currentIndex-batchSize >= 0 {
+			storage[userID] = currentIndex - batchSize
+		}
+	default:
+		bot.Send(m.Sender, "Некорректная команда.")
+		return
+	}
+
+	SendBatch(bot, m.Sender, storage[userID], batchSize, entities, formatEntityFunc, storage)
 }

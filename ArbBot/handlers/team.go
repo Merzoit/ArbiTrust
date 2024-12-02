@@ -14,6 +14,8 @@ import (
 
 var teamData = make(map[int]*structures.Team)
 var step = make(map[int]int)
+var currentTeamIndex = make(map[int]int)
+var teamEntities []structures.Team
 
 type StepHandler func(bot *tb.Bot, m *tb.Message, userID int) error
 
@@ -59,7 +61,7 @@ func CollectTeamData(bot *tb.Bot, m *tb.Message) {
 func handleStep0(bot *tb.Bot, m *tb.Message, userID int) error {
 	teamData[userID] = &structures.Team{
 		Name:       m.Text,
-		Owner:      m.Sender.Username,
+		Owner:      int64(m.Sender.ID),
 		IsVerified: false,
 	}
 	return tools.SendMessage(
@@ -136,7 +138,8 @@ func handleStep8(bot *tb.Bot, m *tb.Message, userID int) error {
 
 func handleStep9(bot *tb.Bot, m *tb.Message, userID int) error {
 	minWithdrawal, err := strconv.Atoi(m.Text)
-	if err != nil || minWithdrawal >= 0 {
+	if err != nil || minWithdrawal <= 0 {
+		log.Printf("СОСИ: %v", minWithdrawal)
 		return fmt.Errorf("invalid withdrawal amount")
 	}
 
@@ -149,4 +152,33 @@ func handleStep9(bot *tb.Bot, m *tb.Message, userID int) error {
 
 	return tools.SendMessage(
 		bot, m.Sender, "*Ваша заявка успешно отправлена на модерацию*")
+}
+
+func TeamListHandler(bot *tb.Bot, m *tb.Message) {
+	entities, err := api.FetchTeamsAPI()
+	if err != nil {
+		bot.Send(m.Sender, "Ошибка загрузки списка команд.")
+		return
+	}
+	teamEntities = entities
+
+	tools.UniversalListHandler[structures.Team](
+		bot,
+		m,
+		api.FetchTeamsAPI,
+		api.FormatTeam,
+		5,
+		currentTeamIndex,
+	)
+}
+
+func TeamNavigatorHandler(bot *tb.Bot, m *tb.Message) {
+	tools.HandleNavigation(
+		bot,
+		m,
+		currentTeamIndex,
+		5,
+		teamEntities,
+		api.FormatTeam,
+	)
 }

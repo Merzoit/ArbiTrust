@@ -6,6 +6,7 @@ import (
 	"arb/structures"
 	"context"
 	"log"
+	"time"
 )
 
 type PublicRepository interface {
@@ -23,13 +24,15 @@ func NewPgPublicRepository() PublicRepository {
 }
 
 func (repo *PgPublicRepository) CreatePublic(public *structures.Public) error {
+	public.RegDate = time.Now()
+
 	query := `
 		INSERT INTO publics (
 			name, tag, contacts, topic, subscriber_price, ad_price, 
 			wants_op, description, is_selling, monthly_users, sale_price, 
-			is_scammer, is_verified
+			is_scammer, is_verified, reg_date,
 			)
-		VALEUS ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+		VALEUS ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
 	`
 	log.Println("DB: Adding public to datebase..")
 
@@ -37,7 +40,7 @@ func (repo *PgPublicRepository) CreatePublic(public *structures.Public) error {
 		context.Background(), query, public.Name, public.Tag, public.Owner,
 		public.Contacts, public.Topic, public.SubcriberPrice, public.AdPrice,
 		public.WantsOP, public.Description, public.IsSelling, public.MonthlyUsers,
-		public.SalePrice, public.IsScammer, public.IsVerified,
+		public.SalePrice, public.IsScammer, public.IsVerified, public.RegDate,
 	)
 
 	if err != nil {
@@ -58,7 +61,7 @@ func (repo *PgPublicRepository) GetPublicByID(id uint) (*structures.Public, erro
 		&public.ID, &public.Name, &public.Tag, &public.Owner, &public.Contacts,
 		&public.Topic, &public.SubcriberPrice, &public.AdPrice,
 		&public.WantsOP, &public.Description, &public.IsSelling,
-		&public.MonthlyUsers, &public.SalePrice, &public.IsScammer,
+		&public.MonthlyUsers, &public.SalePrice, &public.IsScammer, &public.RegDate,
 	)
 
 	if err != nil {
@@ -91,7 +94,7 @@ func (repo *PgPublicRepository) GetAllPublics() ([]*structures.Public, error) {
 			&public.ID, &public.Name, &public.Tag, &public.Owner, &public.Contacts,
 			&public.Topic, &public.SubcriberPrice, &public.AdPrice,
 			&public.WantsOP, &public.Description, &public.IsSelling,
-			&public.MonthlyUsers, &public.SalePrice, &public.IsScammer,
+			&public.MonthlyUsers, &public.SalePrice, &public.IsScammer, &public.RegDate,
 		)
 		if err != nil {
 			log.Printf(constants.LogErrorScaningPublic, err)

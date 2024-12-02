@@ -29,7 +29,7 @@ func CollectTeamDatas(bot *tb.Bot, m *tb.Message) {
 	switch currentStep {
 	case 0:
 		teamData[userID].Name = m.Text
-		teamData[userID].Owner = m.Sender.Username
+		teamData[userID].Owner = int64(userID)
 		step[userID]++
 		bot.Send(m.Sender,
 			"*Шаг 2*\n*Введите контактную информацию:*\n\n_Пример: @mynickname, my@gmail.com\nВведите предпочтительные способы связи. Это может быть_ *номер телефона, почта, иные способы*_. Несколько способов вводите через запятую._ ",

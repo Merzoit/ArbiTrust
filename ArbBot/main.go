@@ -29,12 +29,7 @@ func main() {
 
 	bot.Handle(&tb.ReplyButton{Text: "Список команд"}, func(m *tb.Message) {
 		log.Printf("User %d requested team list\n", m.Sender.ID)
-		if err := api.FetchTeamsAPI(); err != nil {
-			log.Printf("Error fetching teams: %v\n", err)
-			bot.Send(m.Sender, "Не удалось получить список команд. Попробуйте позже.")
-			return
-		}
-		handlers.TeamListHandler(bot, m, batchSize, api.Teams)
+		handlers.TeamListHandler(bot, m)
 	})
 
 	bot.Handle(&tb.ReplyButton{Text: "Добавить команду"}, func(m *tb.Message) {

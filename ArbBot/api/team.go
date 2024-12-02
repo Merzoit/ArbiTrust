@@ -26,30 +26,30 @@ func AddTeamToAPI(team structures.Team) error {
 	return nil
 }
 
-func FetchTeamsAPI() error {
-	apiUrl := "http://localhost:8080/api/allteams/"
+func FetchTeamsAPI() ([]structures.Team, error) {
+	apiUrl := "http://localhost:8080/api/team/all"
 	log.Printf(constants.CallFetchTeam, apiUrl)
 
 	resp, err := http.Get(apiUrl)
 	if err != nil {
 		log.Printf(constants.ErrFetchingResponse, err)
-		return fmt.Errorf(constants.ErrFetchingResponse, err)
+		return nil, fmt.Errorf(constants.ErrFetchingResponse, err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		log.Printf(constants.ErrFetchingTeam, resp.Status)
-		return fmt.Errorf(constants.ErrFetchingTeam, resp.Status)
+		return nil, fmt.Errorf(constants.ErrFetchingTeam, resp.Status)
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&Teams)
 	if err != nil {
 		log.Printf(constants.ErrDecodingResponse, err)
-		return fmt.Errorf(constants.ErrDecodingResponse, err)
+		return nil, fmt.Errorf(constants.ErrDecodingResponse, err)
 	}
 
 	log.Println(constants.LogTeamFetchingSuccessfylly)
-	return nil
+	return Teams, nil
 }
 
 func SendTeam(bot *tb.Bot, user *tb.User, index int, batchSize int, teams []structures.Team) {
@@ -97,4 +97,8 @@ func SendTeam(bot *tb.Bot, user *tb.User, index int, batchSize int, teams []stru
 	} else {
 		log.Println(constants.LogTeamSendingSuccessfylly)
 	}
+}
+
+func FormatTeam(team structures.Team, index int) string {
+	return fmt.Sprintf("%d. Название: %s\nВладелец: %s\nОписание: %s\n\n", index, team.Name, team.Owner, team.Description)
 }
