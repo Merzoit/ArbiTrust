@@ -4,8 +4,11 @@ import (
 	"arb/controllers"
 	"arb/db"
 	"arb/repositories"
+	"arb/routes"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -19,7 +22,18 @@ func main() {
 	teamRepo := repositories.NewPgTeamRepository()
 	teamController := controllers.NewTeamController(teamRepo)
 
-	http.HandleFunc("/api/users", func(w http.ResponseWriter, r *http.Request) {
+	publicRepo := repositories.NewPgPublicRepository()
+	publicController := controllers.NewPublicController(publicRepo)
+
+	router := mux.NewRouter()
+	routes.RegisterUserRoutes(router, userController)
+	routes.RegisterTeamRoutes(router, teamController)
+	routes.RegisterPublicRoutes(router, publicController)
+
+	log.Println("OK!")
+	log.Fatal(http.ListenAndServe(":8080", router))
+
+	/*http.HandleFunc("/api/users", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodPost:
 			userController.CreateUser(w, r)
@@ -43,7 +57,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/api/teams", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/team", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodPost:
 			teamController.CreateTeam(w, r)
@@ -73,8 +87,6 @@ func main() {
 		} else {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
-	})
+	})*/
 
-	log.Println("OK!")
-	log.Fatal(http.ListenAndServe(":8080", nil))
 }
