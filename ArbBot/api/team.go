@@ -66,7 +66,7 @@ func SendTeam(bot *tb.Bot, user *tb.User, index int, batchSize int, teams []stru
 		team := teams[i]
 		msgText += fmt.Sprintf(
 			"%d. Название: %s \nВладелец: %s\nОписание: %s\n\n",
-			i+1, team.Name, team.Owner, team.Description,
+			i+1, team.Name, team.Name, team.Description,
 		)
 	}
 

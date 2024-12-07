@@ -94,7 +94,8 @@ func (repo *PgPublicRepository) GetAllPublics() ([]*structures.Public, error) {
 			&public.ID, &public.Name, &public.Tag, &public.Owner, &public.Contacts,
 			&public.Topic, &public.SubcriberPrice, &public.AdPrice,
 			&public.WantsOP, &public.Description, &public.IsSelling,
-			&public.MonthlyUsers, &public.SalePrice, &public.IsScammer, &public.RegDate,
+			&public.MonthlyUsers, &public.SalePrice, &public.IsScammer,
+			&public.IsSelling, &public.RegDate,
 		)
 		if err != nil {
 			log.Printf(constants.LogErrorScaningPublic, err)

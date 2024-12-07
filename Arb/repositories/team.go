@@ -26,7 +26,6 @@ func NewPgTeamRepository() TeamRepository {
 
 func (repo *PgTeamRepository) AddTeam(team *structures.Team) error {
 	team.RegDate = time.Now()
-
 	query := `
 		INSERT INTO teams (name, owner, contacts, topic, min_subscriber_price, max_subscriber_price, description, bot_link, is_scammer, team_size, sponsor_count, min_withdrawal_amount, is_verified, reg_date)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)

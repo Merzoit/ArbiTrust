@@ -17,8 +17,9 @@ const (
 	ErrSendingStep       = "error sending step: %v"
 	//USER
 	LogErrorAddingUser = "error adding user: %v"
-	//OBJECTS
-
+	//PUBLIC
+	LogErrorAddingPublic = "error adding public: %v"
+	ErrFetchingPublic    = "failed to fetch public: %v"
 	//OTHER
 	LogEmptyList = "list is empty"
 )

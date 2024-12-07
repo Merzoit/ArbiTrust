@@ -5,7 +5,7 @@ import "time"
 type Team struct {
 	ID                  uint      `json:"id"`
 	Name                string    `json:"name"`
-	Owner               int64     `json:"owner"` // if anon user(check) -> create
+	Owner               User      `json:"owner"` // if anon user(check) -> create
 	Contacts            string    `json:"contacts"`
 	Topic               string    `json:"topic"` // Choose?? Topic model
 	MinSubPrice         float64   `json:"min_sub_price"`

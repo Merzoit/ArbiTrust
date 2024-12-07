@@ -60,8 +60,11 @@ func CollectTeamData(bot *tb.Bot, m *tb.Message) {
 
 func handleStep0(bot *tb.Bot, m *tb.Message, userID int) error {
 	teamData[userID] = &structures.Team{
-		Name:       m.Text,
-		Owner:      int64(m.Sender.ID),
+		Name: m.Text,
+		Owner: structures.User{
+			TID:  int64(m.Sender.ID),
+			Name: m.Sender.Username,
+		},
 		IsVerified: false,
 	}
 	return tools.SendMessage(
